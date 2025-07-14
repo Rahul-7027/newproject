@@ -20,7 +20,6 @@ const LOCAL_STORAGE_KEY = "form_template_data";
 export default function FormBuilder() {
   const [fields, setFields] = useState([]);
 
-  // Load saved fields on mount
   useEffect(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (saved) {
@@ -50,7 +49,6 @@ export default function FormBuilder() {
     );
   };
 
-  // Handle drop from FieldPalette
   const handleDrop = (e) => {
     e.preventDefault();
     const type = e.dataTransfer.getData("fieldType");
@@ -66,7 +64,6 @@ export default function FormBuilder() {
     setFields((prev) => [...prev, newField]);
   };
 
-  // Manually add a field
   const handleAddField = () => {
     let type = "short_answer";
 
