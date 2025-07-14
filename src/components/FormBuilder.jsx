@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   Box,
@@ -8,14 +8,14 @@ import {
   Fade,
   Stack,
   Grid,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import SaveIcon from '@mui/icons-material/Save';
-import AddIcon from '@mui/icons-material/Add';
-import { v4 as uuidv4 } from 'uuid';
-import FieldEditor from './FieldEditor';
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SaveIcon from "@mui/icons-material/Save";
+import AddIcon from "@mui/icons-material/Add";
+import { v4 as uuidv4 } from "uuid";
+import FieldEditor from "./FieldEditor";
 
-const LOCAL_STORAGE_KEY = 'form_template_data';
+const LOCAL_STORAGE_KEY = "form_template_data";
 
 export default function FormBuilder() {
   const [fields, setFields] = useState([]);
@@ -30,16 +30,16 @@ export default function FormBuilder() {
 
   const handleSave = () => {
     const invalidFields = fields.filter(
-      (f) => f.required && (!f.label || f.label.trim() === '')
+      (f) => f.required && (!f.label || f.label.trim() === "")
     );
 
     if (invalidFields.length > 0) {
-      alert('Please fill in all required field labels before saving.');
+      alert("Please fill in all required field labels before saving.");
       return;
     }
 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(fields));
-    alert('Form template saved!');
+    alert("Form template saved!");
   };
 
   const handleFieldChange = (id, updatedField) => {
@@ -58,8 +58,8 @@ export default function FormBuilder() {
     const newField = {
       id: uuidv4(),
       type,
-      label: '',
-      helpText: '',
+      label: "",
+      helpText: "",
       required: false,
     };
 
@@ -68,7 +68,7 @@ export default function FormBuilder() {
 
   // Manually add a field
   const handleAddField = () => {
-    let type = 'short_answer';
+    let type = "short_answer";
 
     if (fields.length > 0) {
       type = fields[fields.length - 1].type;
@@ -77,8 +77,8 @@ export default function FormBuilder() {
     const newField = {
       id: uuidv4(),
       type,
-      label: '',
-      helpText: '',
+      label: "",
+      helpText: "",
       required: false,
     };
 
@@ -97,17 +97,13 @@ export default function FormBuilder() {
         minHeight: 500,
         p: 3,
         borderRadius: 3,
-        border: fields.length === 0 ? '2px dashed #ccc' : 'none',
-        backgroundColor: fields.length === 0 ? '#fafafa' : '#fff',
-        transition: 'all 0.3s ease-in-out',
+        border: fields.length === 0 ? "2px dashed #ccc" : "none",
+        backgroundColor: fields.length === 0 ? "#fafafa" : "#fff",
+        transition: "all 0.3s ease-in-out",
       }}
     >
       {fields.length === 0 ? (
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          textAlign="center"
-        >
+        <Typography variant="body1" color="text.secondary" textAlign="center">
           🧲 Drag fields here or click below to add one
         </Typography>
       ) : (
@@ -120,51 +116,53 @@ export default function FormBuilder() {
                   sx={{
                     p: 3,
                     mb: 2,
-                    position: 'relative',
+                    position: "relative",
                     borderRadius: 2,
-                    backgroundColor: '#fefefe',
-                    boxShadow: '0px 2px 8px rgba(0,0,0,0.06)',
+                    backgroundColor: "#fefefe",
+                    boxShadow: "0px 2px 8px rgba(0,0,0,0.06)",
                   }}
                 >
                   <IconButton
                     size="small"
-                    sx={{ position: 'absolute', right: 12, top: 12 }}
+                    sx={{ position: "absolute", right: 12, top: 12 }}
                     onClick={() => handleDelete(field.id)}
                   >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
-                  <FieldEditor field={field} onChange={(updated) => handleFieldChange(field.id, updated)} />
+                  <FieldEditor
+                    field={field}
+                    onChange={(updated) => handleFieldChange(field.id, updated)}
+                  />
+                  {fields.length > 0 && (
+                    <Stack direction="row" spacing={2} mt={2}>
+                      <Button
+                        onClick={handleAddField}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon />}
+                        fullWidth
+                        sx={{ flexGrow: 1 }}
+                      >
+                        Add Field
+                      </Button>
+
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        startIcon={<SaveIcon />}
+                        onClick={handleSave}
+                        fullWidth
+                        sx={{ flexGrow: 1 }}
+                      >
+                        Save
+                      </Button>
+                    </Stack>
+                  )}
                 </Paper>
               </Fade>
             </Grid>
           ))}
         </Grid>
-      )}
-
-      {fields.length > 0 && (
-        <Stack direction="row" spacing={2} mt={2}>
-          <Button
-            onClick={handleAddField}
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            fullWidth
-            sx={{ flexGrow: 1 }}
-          >
-            Add Field
-          </Button>
-
-          <Button
-            variant="outlined"
-            color="success"
-            startIcon={<SaveIcon />}
-            onClick={handleSave}
-            fullWidth
-            sx={{ flexGrow: 1 }}
-          >
-            Save
-          </Button>
-        </Stack>
       )}
     </Box>
   );
